@@ -1,4 +1,4 @@
-# Buzzline-01-Binware
+# Buzzline-01-Bin Ware
 
 This project demonstrates streaming data using Python generators and real-time log monitoring. It includes a custom producer that generates social media post messages (e.g., "I just posted a photo! It was awesome.") and a consumer that monitors the log file in real-time, alerting when a message contains the word "awesome".
 
