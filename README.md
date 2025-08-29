@@ -1,83 +1,144 @@
-# buzzline-01-case
+# Buzzline-01-Binware
 
-![Python 3.11](https://img.shields.io/badge/Python-3.11-blue?logo=python&logoColor=white)
+This project demonstrates streaming data using Python generators and real-time log monitoring. It includes a custom producer that generates social media post messages (e.g., "I just posted a photo! It was awesome.") and a consumer that monitors the log file in real-time, alerting when a message contains the word "awesome".
 
-This project introduces streaming data. 
-The Python language includes generators - we'll use this feature to generate some streaming buzzline messages. 
-As the code runs, it will continuously update the log file. 
-We'll use a consumer to monitor the log file and alert us when a special message is detected. 
+## Project Overview
 
-## Task 1. Set Up Your Machine & Sign up for GitHub
+This streaming analytics project showcases:
+- **Python Generators**: Efficient memory usage with yield statements
+- **Real-time Data Streaming**: Continuous message generation and consumption
+- **Pattern Detection**: Alerting system for specific keywords
+- **Concurrent Processing**: Running producer and consumer simultaneously
 
-We practice professional Python. In each course that uses Python, we use a standard set of popular professional tools. 
-This course uses advanced tools such as Apache Kafka that requires **Python 3.11**. 
-You are encouraged to install and practice with multiple versions. 
-If space is an issue, we only need Python 3.11 for this course. 
+## Setup
 
-Follow instructions at [pro-analytics-01](https://github.com/denisecase/pro-analytics-01), **Part 1: Set Up Machine & Sign up for GitHub**.
+Follow the setup instructions in [pro-analytics-01, Part 1](https://github.com/denisecase/pro-analytics-01) to configure your machine with Python 3.11 and required tools. Then, initialize the project as described in [pro-analytics-01, Part 2](https://github.com/denisecase/pro-analytics-01).
 
-**Setup is critical.** Follow all steps exactly and verify success before proceeding.  
-Missing or incomplete setup steps can make the course impossible to complete.
+### Prerequisites
+- Python 3.11 or higher
+- Virtual environment (`.venv`)
+- Required packages from `requirements.txt`
 
-## Task 2. Initialize a Project
+## Custom Producer: `basic_producer_binware.py`
 
-Once your machine is ready, you'll copy this template repository into your own GitHub account  
-and create your personal version of the project to run and explore. 
-Name it **buzzline-01-yourname** (replace `yourname` with something unique to you).  
+The producer generates randomized social media post messages combining:
+- **Actions**: posted, shared, liked, commented on, retweeted
+- **Topics**: a photo, a video, a blog, a quote, a thread
+- **Adjectives**: awesome, hilarious, inspiring, creative, epic
 
-Follow instructions at [pro-analytics-01](https://github.com/denisecase/pro-analytics-01), **Part 2: Initialize a Project**.
-This will get your project stored safely in the cloud - and ready for work on your machine. 
+Messages are generated every 3 seconds (configurable via `.env` file) and logged to `logs/project_log.log`.
 
-## Task 3. Generate Streaming Data (Terminal 1)
+### Running the Producer (Terminal 1)
 
-Now we'll generate some streaming data. 
-By the way - you've done 90% of the hard work before we even look at code. 
-Congratulations!
-
-In VS Code, open a terminal.
-Use the commands below to activate .venv, and run the generator as a module. 
-To learn more about why we run our Python file as a module, see [PYTHON-PKG-IMPORTS](docs/PYTHON-PKG-IMPORTS.md) 
-
-Windows PowerShell:
-
-```shell
+#### Windows
+```bash
 .venv\Scripts\activate
-py -m producers.basic_producer_case
+py -m producers.basic_producer_binware
 ```
 
-Mac/Linux:
-```zsh
+#### Mac/Linux
+```bash
 source .venv/bin/activate
-python3 -m producers.basic_producer_case
+python3 -m producers.basic_producer_binware
 ```
 
-## Task 4. Monitor an Active Log File (Terminal 2)
+### Sample Producer Output
+```
+📱 I just posted a video! It was creative.
+📱 I just shared a blog! It was awesome.
+📱 I just liked a quote! It was inspiring.
+```
 
-A common streaming task is monitoring a log file as it is being written. 
-This project has a consumer that reads and processes our own log file as log messages arrive. 
+## Custom Consumer: `basic_consumer_binware.py`
 
-In VS Code, open a NEW terminal in your root project folder. 
-Use the commands below to activate .venv, and run the file as a module. 
+The consumer:
+- Monitors the log file in real-time
+- Displays each consumed social media message
+- Alerts when detecting messages containing "awesome"
+- Logs warnings for awesome messages
 
-Windows:
-```shell
+### Running the Consumer (Terminal 2)
+
+#### Windows
+```bash
 .venv\Scripts\activate
-py -m consumers.basic_consumer_case
+py -m consumers.basic_consumer_binware
 ```
 
-Mac/Linux:
-```zsh
+#### Mac/Linux
+```bash
 source .venv/bin/activate
-python3 -m consumers.basic_consumer_case
+python3 -m consumers.basic_consumer_binware
 ```
 
-## Save Space
-To save disk space, you can delete the .venv folder when not actively working on this project.
-We can always recreate it, activate it, and reinstall the necessary packages later. 
-Managing Python virtual environments is a necessary and valuable skill. 
-We will get a good amount of practice. 
+### Sample Consumer Output
+```
+Consumer is ready and monitoring for social media log messages...
+------------------------------------------------------------
+📱 Consumed: I just posted a video! It was creative.
+📱 Consumed: I just shared a blog! It was awesome.
+============================================================
+🚨 ALERT: An awesome social media message detected!
+📍 Message: I just shared a blog! It was awesome.
+============================================================
+📱 Consumed: I just liked a quote! It was inspiring.
+```
 
-## License
-This project is licensed under the MIT License as an example project. 
-You are encouraged to fork, copy, explore, and modify the code as you like. 
-See the [LICENSE](LICENSE.txt) file for more.
+## How It Works
+
+1. **Start the Producer**: Run the producer script in Terminal 1. It will begin generating social media messages every 3 seconds.
+
+2. **Start the Consumer**: Run the consumer script in Terminal 2. It will start monitoring the log file and display messages in real-time.
+
+3. **Watch the Magic**: As the producer creates messages, the consumer reads them instantly. When an "awesome" message appears, you'll see a special alert!
+
+4. **Stop the Processes**: Press `CTRL+C` (or `CMD+C` on Mac) in each terminal to stop the scripts.
+
+## Project Structure
+
+```
+buzzline-01-binware/
+├── producers/
+│   └── basic_producer_binware.py    # Custom social media message generator
+├── consumers/
+│   └── basic_consumer_binware.py    # Real-time log monitor with alerts
+├── logs/
+│   └── project_log.log              # Generated log file
+├── utils/
+│   └── utils_logger.py              # Logging utilities
+├── .env                             # Configuration (MESSAGE_INTERVAL_SECONDS)
+├── requirements.txt                 # Python dependencies
+└── README.md                        # This file
+```
+
+## Key Features
+
+- **Memory Efficient**: Uses Python generators to yield messages one at a time
+- **Real-time Processing**: Consumer reads new log entries as they're written
+- **Pattern Detection**: Automatically identifies and alerts on "awesome" messages
+- **Concurrent Execution**: Producer and consumer run independently in separate terminals
+- **Configurable**: Message interval can be adjusted via `.env` file
+
+## Customizations Made
+
+### Producer Enhancements
+- Created social media-themed message generator
+- Implemented random selection from predefined word lists
+- Added variety with 5 actions × 5 topics × 5 adjectives = 125 possible messages
+
+### Consumer Enhancements
+- Real-time log file monitoring with position tracking
+- Visual message consumption with emoji indicators
+- Alert system with highlighted notifications for "awesome" messages
+- Warning-level logging for detected patterns
+
+## Troubleshooting
+
+- **Consumer not showing messages**: Ensure the producer is running first
+- **Log file not found**: Check that the `logs` directory exists
+- **Import errors**: Activate the virtual environment before running scripts
+- **No alerts showing**: Wait for a message containing "awesome" (appears randomly)
+
+## Author
+
+Created by Bin Ware for the Streaming Data Analytics course at Northwest Missouri State University.
